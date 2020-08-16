@@ -3,12 +3,9 @@ import ReactDOM from "react-dom";
 import "./assets/style.css";
 import quizService from "./quizService";
 import QuestionBox from "./components/QuestionBox";
+import Result from "./components/Result";
 
-// here selected prop will run fucnt computeAnswer
-// which get user responce and access to correct answer from API
 class QuizBee extends Component {
-  // add state var score
-  // add state responses to track number of question answered
   state = {
     questionBank: [],
     score: 0,
@@ -21,20 +18,25 @@ class QuizBee extends Component {
       });
     });
   };
-  //   computeAnswer check matches with correct if so we increment score
   computeAnswer = (answer, correctAnswer) => {
     if (answer === correctAnswer) {
       this.setState({
-        //   if answer correct plus 1
         score: this.state.score + 1,
       });
     }
-    //   in all cases will +1 to track number of questions
-    // and ensure that dont over-set value of responses than 5 questions
     this.setState({
       responses: this.state.responses < 5 ? this.state.responses + 1 : 5,
     });
   };
+//  playAgain invoke getQuestions() and reset score and responses var to 0
+// it force to rerender QuizBox again cause we conditionally rendering based on responses variable
+  playAgain=()=>{
+      this.getQuestions()
+      this.setState({
+          score: 0,
+          responses:0
+      })
+  }
   componentDidMount() {
     this.getQuestions();
   }
@@ -42,8 +44,6 @@ class QuizBee extends Component {
     return (
       <div className="container">
         <div className="title">QuizBee</div>
-        {/* add another contidion to render QuestionBox component */}
-        {/* if value 5 display result */}
         {this.state.questionBank.length > 0 &&
           this.state.responses < 5 &&
           this.state.questionBank.map(
@@ -56,8 +56,8 @@ class QuizBee extends Component {
               />
             )
           )}
-        {/* add display result if responses =5 so return state score and if false null */}
-        {this.state.responses === 5 ? <h2>{this.state.score}</h2> : null}
+          {/* instead of h2 render a Result component */}
+        {this.state.responses === 5 ? <Result score={this.state.score} responses={this.state.responses} playAgain={this.playAgain} /> : null}
       </div>
     );
   }

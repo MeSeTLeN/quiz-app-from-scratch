@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-// to calculate score we can just add new props
-// add new prop selected which will be funct and run this funct when user pres btn onClick
-
 const QuestionBox = ({ question, options, selected }) => {
   const [answer, setAnswer] = useState(options);
   return (
