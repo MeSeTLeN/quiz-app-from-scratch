@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
-const QuestionBox = ({ question, options }) => {
+// to calculate score we can just add new props
+// add new prop selected which will be funct and run this funct when user pres btn onClick
+
+const QuestionBox = ({ question, options, selected }) => {
   const [answer, setAnswer] = useState(options);
-//   onClick run funct which run setAnswer method
-//   it will rewrtite the answer state Array with new Array contain only one answer
   return (
     <div className="questionBox">
       <div className="question">{question}</div>
@@ -11,7 +12,10 @@ const QuestionBox = ({ question, options }) => {
         <button
           key={index}
           className="answerBtn"
-          onClick={() => setAnswer([text])}
+          onClick={() => {
+            setAnswer([text]);
+            selected(text);
+          }}
         >
           {text}
         </button>
